@@ -144,6 +144,7 @@ class MockInsurerService
     {
         $policy = MockInsurerPolicy::where('issuance_reference', $reference)
             ->orWhere('provider_reference', $reference)
+            ->orWhere('policy_number', $reference)
             ->first();
 
         if (! $policy) {
