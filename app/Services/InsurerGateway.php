@@ -9,10 +9,13 @@ use Throwable;
 class InsurerGateway
 {
     private string $baseUrl;
+    private bool $isInternal;
 
-    public function __construct()
-    {
-        $this->baseUrl = config('services.mock_insurer.base_url', 'http://localhost/api/mock-insurer');
+    public function __construct(
+        private readonly MockInsurerService $mockInsurerService
+    ) {
+        $this->baseUrl = config('services.mock_insurer.base_url', 'http://127.0.0.1:8000/api/mock-insurer');
+        $this->isInternal = (bool) config('services.mock_insurer.internal', true);
     }
 
     /**
@@ -24,6 +27,11 @@ class InsurerGateway
      */
     public function submitIssuance(array $payload, ?string $scenarioHeader = null): array
     {
+        // When running in local single-threaded server mode, dispatch internally to prevent self-deadlock
+        if ($this->isInternal) {
+            return $this->mockInsurerService->processIssuance($payload, $scenarioHeader);
+        }
+
         $headers = [];
         if ($scenarioHeader) {
             $headers['X-Mock-Scenario'] = $scenarioHeader;
@@ -66,6 +74,10 @@ class InsurerGateway
      */
     public function lookupStatus(string $reference): array
     {
+        if ($this->isInternal) {
+            return $this->mockInsurerService->lookup($reference);
+        }
+
         try {
             $response = Http::timeout(3)
                 ->get("{$this->baseUrl}/policies/{$reference}");
