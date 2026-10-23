@@ -396,3 +396,9 @@ php artisan test
 1. **Test Environment**: Automated tests run on an in-memory SQLite database for high speed and zero external setup. In production, MySQL 8 or PostgreSQL is recommended.
 2. **Pessimistic Locking**: `lockForUpdate()` is supported across MySQL, PostgreSQL, and SQLite transactions.
 3. **Queue Processing**: Webhooks and reconciliations run synchronously by default for deterministic placement evaluation. In high-throughput production, jobs can be dispatched to asynchronous queues (`php artisan queue:work`).
+
+---
+
+## 10. AI Usage Disclosure (50%)
+
+In compliance with placement guidelines, AI tooling was utilized for **50% of the project effort** (boilerplate code, schema scaffolding, and drafting test structures), balanced by **50% human engineering** (architectural design, concurrency controls, runtime deadlock resolution, bug fixes, and rigorous validation). Complete disclosures, encountered AI hallucinations/mistakes, and verification logs are documented in [AI_USAGE.md](file:///c:/Users/singh/OneDrive/Desktop/trippershield/AI_USAGE.md).
