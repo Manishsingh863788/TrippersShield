@@ -35,4 +35,8 @@ return [
         ],
     ],
 
+    'mock_insurer' => [
+        'base_url' => env('MOCK_INSURER_BASE_URL', 'http://localhost/api/mock-insurer'),
+    ],
+
 ];
